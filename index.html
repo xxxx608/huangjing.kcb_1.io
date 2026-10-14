@@ -418,14 +418,22 @@
   .period .pno { font-weight: 800; }
 
   .course {
-    border-radius: 13px; padding: 6px 5px 5px; border-left: none;
-    box-shadow: 0 3px 9px rgba(150,110,130,.12);
+    border-radius: 14px; padding: 7px 6px 6px; border-left: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 4px 10px rgba(158,120,142,.13);
   }
   .course .c-name { font-weight: 800; }
   .course .c-tag {
     border-radius: 999px; background: rgba(255,255,255,.82);
     color: var(--accent-ink); font-weight: 800; padding: 3px 6px;
   }
+
+  .schedule-wrap { position: relative; }
+  .corner-icon {
+    position: absolute; right: 7px; bottom: 7px; width: 30px; height: 30px;
+    pointer-events: none; opacity: .92; transform: rotate(-8deg);
+    filter: drop-shadow(0 2px 3px rgba(255,143,171,.35));
+  }
+  .corner-icon svg { width: 100%; height: 100%; display: block; }
 
   .foot {
     border: 2px solid var(--line); border-radius: 16px;
@@ -469,7 +477,10 @@
       <button data-mode="even">双周</button>
     </div>
 
-    <div class="schedule" id="schedule" aria-label="课程表"></div>
+    <div class="schedule-wrap">
+      <div class="schedule" id="schedule" aria-label="课程表"></div>
+      <span class="corner-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="#ff9ec2" d="M11 2c.55 3.6 2.3 6 6.5 6.5-4.2.5-5.95 2.9-6.5 6.5-.55-3.6-2.3-6-6.5-6.5C8.7 8 10.45 5.6 11 2z"/><circle cx="19.5" cy="4.5" r="1.4" fill="#ffd0e2"/><circle cx="5" cy="19" r="1.1" fill="#ffd0e2"/><circle cx="20" cy="18" r="0.9" fill="#ffd0e2"/></svg></span>
+    </div>
 
     <footer class="foot">
       <div class="row">本周共 <span class="count" id="courseCount">0</span> 门课 · <span id="parityText">单周</span></div>
@@ -540,17 +551,17 @@
   ];
 
   var COLORS = {
-    "服务管理": { bg: "#d7f3ef", fg: "#0b6b5f", line: "#0d9488" },
-    "技术经济学": { bg: "#dbeafe", fg: "#1e40af", line: "#2563eb" },
-    "消费者行为学": { bg: "#ffedd5", fg: "#9a3412", line: "#ea580c" },
-    "数字化客户关系管理": { bg: "#dcfce7", fg: "#166534", line: "#16a34a" },
-    "管理统计学": { bg: "#e0e7ff", fg: "#3730a3", line: "#4f46e5" },
-    "战略管理": { bg: "#ffe4e6", fg: "#9f1239", line: "#e11d48" },
-    "商务礼仪A": { bg: "#fef3c7", fg: "#92400e", line: "#d97706" },
-    "ERP原理与应用": { bg: "#ede9fe", fg: "#5b21b6", line: "#7c3aed" },
-    "形势与政策（五）": { bg: "#cffafe", fg: "#155e75", line: "#0891b2" }
+    "服务管理": { bg: "#c6f0e4", bg2: "#e9fbf5", fg: "#0f6a58", line: "#0d9488" },
+    "技术经济学": { bg: "#c9e5ff", bg2: "#e8f4ff", fg: "#1a5da8", line: "#2563eb" },
+    "消费者行为学": { bg: "#ffdfc7", bg2: "#fff1e5", fg: "#a4561f", line: "#ea580c" },
+    "数字化客户关系管理": { bg: "#d9f7c4", bg2: "#eefbe3", fg: "#3f7a1f", line: "#65a30d" },
+    "管理统计学": { bg: "#e2d8ff", bg2: "#f2ecff", fg: "#5a3fa8", line: "#7c5cff" },
+    "战略管理": { bg: "#ffd4e0", bg2: "#ffeaf0", fg: "#a83a58", line: "#ff7fa8" },
+    "商务礼仪A": { bg: "#ffd6ea", bg2: "#ffeaf5", fg: "#a83a78", line: "#ff8fc4" },
+    "ERP原理与应用": { bg: "#c9eff3", bg2: "#e6f9fb", fg: "#146b76", line: "#22b8cf" },
+    "形势与政策（五）": { bg: "#e6d6ff", bg2: "#f4ecff", fg: "#6a3aa0", line: "#a855f7" }
   };
-  var DEFAULT_COLOR = { bg: "#eef2f6", fg: "#334155", line: "#64748b" };
+  var DEFAULT_COLOR = { bg: "#eef2f6", bg2: "#f7f9fb", fg: "#334155", line: "#64748b" };
 
   function addDays(d, n) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); }
   function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
@@ -682,7 +693,7 @@
       b.style.gridColumn = (c.day + 1).toString();
       b.style.gridRowStart = (c.start + 1).toString();
       b.style.gridRowEnd = "span " + (c.end - c.start + 1);
-      b.style.background = col.bg;
+      b.style.background = "linear-gradient(160deg, " + col.bg2 + " 0%, " + col.bg + " 100%)";
       b.style.color = col.fg;
       b.style.borderLeftColor = col.line;
       b.setAttribute("aria-label", c.name + "，" + c.room);
